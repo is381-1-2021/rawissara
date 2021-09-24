@@ -1,5 +1,7 @@
+import 'package:first_app/models/form_model.dart';
 import 'package:first_app/pages/second_page.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class FirstPage extends StatefulWidget{
   @override
@@ -31,7 +33,14 @@ class _FirstPageState extends State<FirstPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('First Page-$_message'),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Consumer<FormModel>(
+                builder: (context, model, child) {
+                  return Text('First Page-${model.firstName} ${model.lastname} ${model.age}');
+                },
+              ),
+            ),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
@@ -45,11 +54,7 @@ class _FirstPageState extends State<FirstPage> {
             ),
             ElevatedButton(
               onPressed: () async {
-                var response = await Navigator.pushNamed(context, '/6' );
-               
-                setState(() {
-                 _message = response.toString(); 
-                });
+                Navigator.pushNamed(context, '/6' );
               },
               child: Text('Please click to fill the form.'),
             ),
