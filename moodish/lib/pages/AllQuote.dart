@@ -4,13 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:midterm_app/controllers/note_controller.dart';
 import 'package:midterm_app/models/Note.dart';
 import 'package:midterm_app/models/NotesOperation.dart';
+import 'package:midterm_app/services/services.dart';
 import 'package:provider/provider.dart';
 
 class AllQuote extends StatefulWidget {
-  final NoteController controller;
-
-  AllQuote({required this.controller});
-  
   @override
   _AllQuoteState createState() => _AllQuoteState();
 }
@@ -18,17 +15,20 @@ class AllQuote extends StatefulWidget {
 class _AllQuoteState extends State<AllQuote> {
   List<Note> notes = List.empty();
   bool isLoading = false;
+  var services = FirebaseServices();
+  var controller;
 
   void initState() {
     super.initState();
+    controller = NoteController(services);
 
-    widget.controller.onSync.listen(
+    controller.onSync.listen(
       (bool syncState) => setState(() => isLoading = syncState),
     );
   }
 
   void _getNotes() async {
-    var newNotes = await widget.controller.fetchNotes();
+    var newNotes = await controller.fetchNotes();
 
     setState(() => notes = newNotes);
   }
@@ -41,12 +41,36 @@ class _AllQuoteState extends State<AllQuote> {
               if (notes.isEmpty) {
                 return Text('Tap button to fetch notes');
               }
-              return ListTile(
-                title: Text(notes[index].quoteText),
-                //subtitle: Text(notes[index].date),
-                //subtitle: Text(formattedDate(notes[index].date)),
-                subtitle: Text('${notes[index].date}'),
-              );
+              return Container(
+                  margin: EdgeInsets.all(15),
+                  padding: EdgeInsets.all(15),
+                  height: 120,
+                  decoration: BoxDecoration(
+                      color: Color(0xFFFFC392), borderRadius: BorderRadius.circular(15)),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                          '${notes[index].date}',
+                          style: TextStyle(color: Colors.white)),
+                      Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Text(
+                           notes[index].quoteText,
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w400,
+                                color: Color(0xFF5F478C)),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                    ],
+                  ),
+                );
             },
           );
   //UI ของมิดเทอม
@@ -60,12 +84,18 @@ class _AllQuoteState extends State<AllQuote> {
         //  Navigator.pushNamed(context, '/9');
         //},
         child: Icon(
-          Icons.add,
+          Icons.search,
           size: 30,
         ),
       ),
       appBar: AppBar(
         title: Text('All your quote'),
+        actions: [
+         IconButton(
+           icon: Icon(Icons.add),
+           onPressed: () {Navigator.pushNamed(context, '/9');},
+         ),
+      ],
       ),
       body: Center(child: body)
       //Consumer<NotesOperation>(

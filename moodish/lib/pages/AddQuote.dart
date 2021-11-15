@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:midterm_app/models/NotesOperation.dart';
 import 'package:provider/provider.dart';
@@ -5,7 +6,8 @@ import 'package:provider/provider.dart';
 class AddQuote extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    String quote = '';
+    TextEditingController quoteText = new TextEditingController();
+
     return Scaffold(
         appBar: AppBar(
           title: Text('Add your quote'),
@@ -17,6 +19,7 @@ class AddQuote extends StatelessWidget {
             children: [
               Expanded(
                 child: TextFormField(
+                  controller: quoteText,
                   keyboardType: TextInputType.multiline,
                   decoration: InputDecoration(
                     border: InputBorder.none,
@@ -32,8 +35,10 @@ class AddQuote extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF5F478C),
                   ),
-                  onChanged: (value) {
-                    quote = value;
+                  validator: (quoteText) {
+                    if (quoteText == null || quoteText.isEmpty) {
+                    return 'Please enter your quote';
+                    }
                   },
                 ),
               ),
@@ -42,9 +47,9 @@ class AddQuote extends StatelessWidget {
                   primary: Color(0xFF5F478C),
                 ),
                 onPressed: () {
-                //  Provider.of<NotesOperation>(context, listen: false)
-                //      .addNewNote(date, quote);
-                //  Navigator.pop(context);
+                Map <String, dynamic> data = {"quoteText":quoteText.text,"date":DateTime.now()}; 
+                FirebaseFirestore.instance.collection("moodish_quotes").add(data);
+                  Navigator.pop(context);
                 },
                 child: Text('Add Quote'),
               ),
