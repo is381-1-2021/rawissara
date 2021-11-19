@@ -51,8 +51,8 @@ class _AllQuoteState extends State<AllQuote> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                          '${notes[index].date}',
-                          style: TextStyle(color: Colors.white)),
+                          '${notes[index].date.toString().substring(0, notes[index].date.toString().lastIndexOf(':'))}',
+                          style: TextStyle(color: Colors.black)),
                       Center(
                         child: Padding(
                           padding: const EdgeInsets.all(12.0),
@@ -79,12 +79,9 @@ class _AllQuoteState extends State<AllQuote> {
     return Scaffold(
       backgroundColor: Colors.white,
       floatingActionButton: FloatingActionButton(
-        onPressed: _getNotes,
-        //() {
-        //  Navigator.pushNamed(context, '/9');
-        //},
+        onPressed: () {Navigator.pushNamed(context, '/9');},
         child: Icon(
-          Icons.search,
+          Icons.add,
           size: 30,
         ),
       ),
@@ -92,22 +89,12 @@ class _AllQuoteState extends State<AllQuote> {
         title: Text('All your quote'),
         actions: [
          IconButton(
-           icon: Icon(Icons.add),
-           onPressed: () {Navigator.pushNamed(context, '/9');},
+           icon: Icon(Icons.refresh),
+           onPressed: _getNotes,
          ),
       ],
       ),
       body: Center(child: body)
-      //Consumer<NotesOperation>(
-      //  builder: (context, NotesOperation data, child) {
-      //    return ListView.builder(
-      //      itemCount: data.getNotes.length,
-      //      itemBuilder: (context, index) {
-      //        return NotesCard(data.getNotes[index]);
-      //      },
-      //    );
-      //  },
-      //),
     );
   }
 }

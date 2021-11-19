@@ -48,7 +48,10 @@ class AddQuote extends StatelessWidget {
                 ),
                 onPressed: () {
                 Map <String, dynamic> data = {"quoteText":quoteText.text,"date":DateTime.now()}; 
-                FirebaseFirestore.instance.collection("moodish_quotes").add(data);
+                FirebaseFirestore.instance.collection("moodish_quotes")
+                .add(data)
+                .then((value) => print("New Quote Added"))
+                .catchError((error) => print("Failed to add quote!!"));
                   Navigator.pop(context);
                 },
                 child: Text('Add Quote'),

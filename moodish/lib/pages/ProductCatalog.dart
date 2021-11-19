@@ -10,8 +10,6 @@ import 'ProductDetail.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProductCatalog extends StatelessWidget {
-  //final ProductController controller3;
-  //ProductCatalog({required this.controller3});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,7 +69,9 @@ class ProductCatalog extends StatelessWidget {
                 SizedBox(height: 20.0),
                 ElevatedButton.icon(
                   icon: Icon(Icons.history),
-                  onPressed: () {},
+                  onPressed: () async {
+                    Navigator.pushNamed(context, '/12');
+                  },
                   label: Text(
                     'Order History',
                     style: TextStyle(

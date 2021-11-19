@@ -1,5 +1,56 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+class OrderModel{
+  final String amount;
+  final String itemName;
+  final DateTime order_date;
+  final String status;
+
+  OrderModel(this.amount, this.itemName, this.order_date, this.status);
+
+  factory OrderModel.fromJson(
+    Map<String, dynamic> json,
+  ) {
+    return OrderModel(
+      json['amount'] as String,
+      json['itemName'] as String,
+      (json['order_date'] as Timestamp).toDate(),
+      json['status'] as String,
+    );
+  }
+}
+
+class AllOrders {
+  final List<OrderModel> orders;
+
+  AllOrders(this.orders);
+
+  factory AllOrders.fromJson(
+    List<dynamic> json,
+  ){
+    var x = json.map((record) => OrderModel.fromJson(record)).toList();
+  
+    return AllOrders(x);
+  }
+
+  factory AllOrders.fromSnapshot(
+    QuerySnapshot snapshot
+  ) {
+    var x = snapshot.docs.map((record) {
+      return OrderModel.fromJson(
+        record.data() as Map<String, dynamic>
+      );
+    }).toList();
+
+    return AllOrders(x);
+  }
+}
+
+
+
+
+//provider เดิม
 class PaymentModel extends ChangeNotifier{
  String? _name;
  String? _orderref;

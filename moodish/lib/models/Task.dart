@@ -2,16 +2,20 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Task {
   final String detail;
+  final DateTime duedate;
   final String headline;
+  bool completed;
 
-  Task(this.detail, this.headline);
+  Task(this.detail, this.duedate, this.headline,this.completed);
 
   factory Task.fromJson(
     Map<String, dynamic> json,
   ) {
     return Task(
       json['detail'] as String,
+      (json['duedate'] as Timestamp).toDate(),
       json['headline'] as String,
+      json['completed'] as bool,
     );
   }
 }
