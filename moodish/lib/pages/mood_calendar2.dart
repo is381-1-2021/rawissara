@@ -33,6 +33,7 @@ class _AllMoodState extends State<AllMood> {
   Widget get body => isLoading
       ? CircularProgressIndicator()
       : ListView.builder(
+        //scrollDirection: Axis.horizontal,
           itemCount: moods.isEmpty ? 1 : moods.length,
           itemBuilder: (ctx, index) {
             if (moods.isEmpty) {
@@ -43,24 +44,53 @@ class _AllMoodState extends State<AllMood> {
               padding: EdgeInsets.all(15),
               height: 120,
               decoration: BoxDecoration(
-                  color: Color(0xFF9ADCF1),
-                  borderRadius: BorderRadius.circular(15)),
+                  color: (moods[index].mood == 'Excited')
+                      ? Colors.green
+                      : (moods[index].mood == 'Happy')
+                          ? Colors.amber
+                          : (moods[index].mood == 'Sad')
+                              ? Colors.orange
+                              : (moods[index].mood == 'Angry')
+                                  ? Colors.red
+                                  : Colors.grey,
+                  borderRadius: BorderRadius.circular(20)),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('${moods[index].mood_date.toString().substring(0, moods[index].mood_date.toString().lastIndexOf(' '))}',
-                      style: TextStyle(color: Colors.black)),
-                  Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Text(
-                        moods[index].mood,
-                        style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.black),
+                      style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white,fontSize: 20),),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Text(
+                            moods[index].mood,
+                            style: TextStyle(
+                                fontSize: 25,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
+                        ),
                       ),
-                    ),
+                      GestureDetector(
+                        child: Container(
+                          height: 50,
+                          width: 50,
+                          child: (moods[index].mood == 'Excited')
+                              ? Image.asset('assets/excited.png')
+                              : (moods[index].mood == 'Happy')
+                                  ? Image.asset('assets/happy.png')
+                                  : (moods[index].mood == 'Sad')
+                                      ? Image.asset('assets/sad.png')
+                                      : (moods[index].mood == 'Angry')
+                                          ? Image.asset('assets/angry.png')
+                                          : null,
+                        ),
+                      ),
+                    ],
                   ),
                   SizedBox(
                     height: 5,
@@ -75,9 +105,11 @@ class _AllMoodState extends State<AllMood> {
     return Scaffold(
         backgroundColor: Colors.white,
         floatingActionButton: FloatingActionButton(
-          onPressed: _getMoods,
+          onPressed: () {
+            Navigator.pushNamed(context, '/7');
+          },
           child: Icon(
-            Icons.refresh,
+            Icons.add,
             size: 30,
           ),
         ),
@@ -85,10 +117,8 @@ class _AllMoodState extends State<AllMood> {
           title: Text('Mood Tracker'),
           actions: [
             IconButton(
-              icon: Icon(Icons.add),
-              onPressed: () {
-                Navigator.pushNamed(context, '/7');
-              },
+              icon: Icon(Icons.refresh),
+              onPressed: _getMoods,
             ),
           ],
         ),

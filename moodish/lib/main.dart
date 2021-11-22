@@ -1,7 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:midterm_app/controllers/product_controller.dart';
+import 'package:midterm_app/pages/Account.dart';
 import 'package:midterm_app/pages/OrderList.dart';
+import 'package:midterm_app/pages/Register.dart';
 import 'package:midterm_app/pages/TaskOverview.dart';
 import 'package:provider/provider.dart';
 
@@ -32,13 +34,7 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (context) => MoodModel(),
-        ),
-        ChangeNotifierProvider(
            create: (context) => FormModel(),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => NotesOperation(),
         ),
       ],
       child: MyApp(),
@@ -71,7 +67,7 @@ class MyApp extends StatelessWidget {
         ),
       ),
       initialRoute: '/2',
-      routes: <String, WidgetBuilder>{
+      routes: <String, WidgetBuilder> {
         '/1': (context) => LogIn(),
         '/2': (context) => Home(),
         '/3': (context) => AllTask(),
@@ -84,7 +80,9 @@ class MyApp extends StatelessWidget {
         '/10': (context) => AllQuote(),
         '/11' : (context) => ShowListProduct(),
         '/12' : (context) => OrderList(),
-        '/13' : (context) => TaskEdit()
+        '/13' : (context) => TaskEdit(),
+        '/14' : (context) => RegisterScreen(),
+        '/15' : (context) => Account(),
       },
     );
   }

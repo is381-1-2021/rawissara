@@ -103,7 +103,7 @@ class _MoodFormState extends State<MoodForm> {
                 ),
                 Text(
                     'Excited           Happy            Sad             Angry'),
-                SizedBox(height: 30),
+                SizedBox(height: 40),
                 ElevatedButton(
                   onPressed: () {
                     Map<String, dynamic> data = {

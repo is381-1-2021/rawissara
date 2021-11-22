@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:midterm_app/models/Product_model.dart';
 import 'package:midterm_app/models/formpayment_model.dart';
 import 'package:midterm_app/pages/ProductDetail.dart';
 import 'package:provider/provider.dart';
@@ -35,7 +36,7 @@ class MakeOrder extends StatelessWidget {
             ),
             SizedBox(height: 20),
             Text(
-                'Order Form',
+                'Order Product',
                 style: TextStyle(
                   fontSize: 30,
                   fontFamily: 'Montserrat',
@@ -60,12 +61,12 @@ class FormConfirm extends StatefulWidget {
 class _FormConfirmState extends State<FormConfirm> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController itemName = new TextEditingController();
-  TextEditingController email = new TextEditingController();
   TextEditingController amount = new TextEditingController();
-  //String _name = '';
-  //String _orderref = '';
-  //String _datetime = '';
-  //int _amount = 50;
+  //var selectedProduct;
+  //final products = [
+  //  'Digital Notebook: Sweet Home ฿99',
+  //  'App Icons: Picnic Day ฿159'
+  //];
 
   @override
   Widget build(BuildContext context) {
@@ -99,14 +100,41 @@ class _FormConfirmState extends State<FormConfirm> {
               }
             },
           ),
-          SizedBox(height: 15.0),
+        //  Icon(
+        //    Icons.shopping_cart_outlined,
+        //    size: 50,
+        //  ),
+        //  SizedBox(height: 30.0),
+        //  Row(
+        //    mainAxisAlignment: MainAxisAlignment.center,
+        //    children: <Widget> [
+              //Icon(Icons.production_quantity_limits),
+              //SizedBox(width: 20),
+        //      Container(
+        //        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+        //        decoration: BoxDecoration(
+        //          border: Border.all(color: Color(0xFF9ADCF1), width:2),
+        //          borderRadius: BorderRadius.circular(20),
+        //        ),
+        //        child: DropdownButtonHideUnderline(
+        //          child: DropdownButton<String> (
+        //            hint: Text('Select product'),
+        //            value: selectedProduct,
+        //            items: products.map(buildMenuItem).toList(),
+        //            onChanged: (selectedProduct) => setState(() => this.selectedProduct = selectedProduct),
+        //          ),
+        //        ),
+        //      )
+        //    ],
+        //  ),
+          SizedBox(height: 60),
           ElevatedButton(
             onPressed: () {
                 if (_formKey.currentState!.validate()) {
               
                   _formKey.currentState!.save();
 
-                Map <String, dynamic> data = {"itemName":itemName.text, "amount":amount.text,"status":"waiting","order_date":DateTime.now()}; 
+                Map <String, dynamic> data = {"itemName":itemName.text,"amount":amount.text,"status":"waiting","order_date":DateTime.now()}; 
                 FirebaseFirestore.instance.collection("moodish_order")
                 .add(data)
                 .then((value) => print("New Order Added"))
@@ -117,7 +145,7 @@ class _FormConfirmState extends State<FormConfirm> {
                   MaterialPageRoute(builder: (context) => PayandGo()));
               }
             },
-            child: Text('Next'),
+            child: Text('Check Out'),
             style: ElevatedButton.styleFrom(
               primary: Color(0xFF5F478C),
               fixedSize: Size(250, 50),
@@ -131,4 +159,44 @@ class _FormConfirmState extends State<FormConfirm> {
       ),
     );
   }
+
+  //DropdownMenuItem<String> buildMenuItem(String product) => DropdownMenuItem(
+  //  value: product,
+  //  child: Text(
+  //    product,
+  //    style: TextStyle(fontWeight: FontWeight.w500),
+  //  ),
+  //);
+
 }
+
+
+class ProductItem {
+  final String title;
+  final int price;
+
+  const ProductItem({
+    Key? key, 
+    required this.title,
+    required this.price, 
+    });
+}
+
+List<ProductItem> products = [
+  ProductItem(
+    title: 'Digital Notebook: Sweet Home',
+    price: 199,
+  ),
+  ProductItem(
+    title: 'App Icons: Picnic Day',
+    price: 99,
+  ),
+  ProductItem(
+    title: 'Digital Memo: Space Galaxy',
+    price: 159,
+  ),
+  ProductItem(
+    title: 'Digital Sticker: Moodish v.2',
+    price: 129,
+  ),
+];

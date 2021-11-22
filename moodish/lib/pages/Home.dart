@@ -10,19 +10,21 @@ class Home extends StatelessWidget {
     var size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
+        leading: Icon(Icons.menu),
         backgroundColor: Color(0xFF8B82D0),
         elevation:0,
         actions: [
          IconButton(
-           icon: Icon(Icons.account_circle_outlined),
-           onPressed: () {Navigator.pushReplacementNamed(context, '/1');},
+           padding: EdgeInsets.only(right: 20),
+           icon: Icon(Icons.account_circle_outlined,size: 35),
+           onPressed: () {Navigator.pushReplacementNamed(context, '/15');},
          ),
       ],
       ),
       body: Stack(
         children: <Widget>[
           Container(
-            height: size.height * .45,
+            height: size.height * .50,
             decoration: BoxDecoration(
               color: Color(0xFF8B82D0),
               borderRadius: BorderRadius.only(
@@ -32,118 +34,133 @@ class Home extends StatelessWidget {
             ),
           ),
           SafeArea(
-              child: Column(
-                children: <Widget>[
-                  SizedBox(height: 10),
-                  Text(
-                    'Welcome to Moodish',
-                    style: TextStyle(
-                      fontFamily: 'Montserrat',
-                      color: Color(0xFF5F478C),
-                      fontWeight: FontWeight.bold,
-                      fontSize: 25,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Consumer<FormModel>(
-                      builder: (context, model, child) {
-                        return Text(
-                          //ที่เพิ่มใหม่
-                     //   auth.currentUser!.email == null
-                     //     ? "not login"
-                     //     : auth.currentUser!.email!
-                        'Email - ${model.Email}'
-                        , 
-                        style: TextStyle(
-                          fontSize: 20, 
-                          color: Colors.white
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                  Expanded(
-                    child: GridView.count(
-                      crossAxisCount: 2,
-                      children: <Widget>[
-                        InkWell(
-                          onTap: () {
-                            Navigator.pushNamed(context, '/3');
-                          },
-                          child: Container(
-                            child: Category(
-                              title: 'Task',
-                              png: 'assets/TaskOverview.png',
-                            ),
-                          ),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            if (context.read<FormModel>().isLogin) {
-                              Navigator.pushNamed(context, '/5');
-                              return;
-                            }
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text('You have not login yet.'),
-                            ));
-                          },
-                          child: Container(
-                            child: Category(
-                              title: 'Store',
-                              png: 'assets/Store.png',
-                            ),
-                          ),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            //edit
-                            if (context.read<FormModel>().isLogout) {
-                              Navigator.pushNamed(context, '/8');
-                              return;
-                            }
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text('You have not login yet.'),
-                            ));
-                          },
-                          child: Container(
-                            child: Category(
-                              title: 'Mood',
-                              png: 'assets/DailyMood.png',
-                            ),
-                          ),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            Navigator.pushNamed(context, '/10');
-                          },
-                          child: Container(
-                            child: Category(
-                              title: 'Quote',
-                              png: 'assets/DailyQuote.png',
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  ElevatedButton.icon(
-                    onPressed: () async {
-                     FirebaseAuth.instance.signOut();
-                     Navigator.popUntil(context, ModalRoute.withName('/1'));
-                    }, 
-                    icon: Icon(Icons.login), 
-                    label: Text('Logout'),
-                    style: ElevatedButton.styleFrom(
-                      primary: Color(0xFF5F478C),
-                      fixedSize: Size(250,50),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50),
+              child: Padding(
+                padding: const EdgeInsets.only(top: 10.0),
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(height: 10),
+                    Text(
+                      'Welcome to Moodish',
+                      style: TextStyle(
+                        fontFamily: 'Montserrat',
+                        color: Color(0xFF5F478C),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 25,
                       ),
-                      textStyle: TextStyle(fontSize: 20),
                     ),
-                  ),
-                ],
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Consumer<FormModel>(
+                        builder: (context, model, child) {
+                          return Text(
+                            //ที่เพิ่มใหม่
+                       //   auth.currentUser!.email == null
+                       //     ? "not login"
+                       //     : auth.currentUser!.email!
+                          'Email - ${model.Email}'
+                          , 
+                          style: TextStyle(
+                            fontSize: 20, 
+                            color: Colors.white
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                    Expanded(
+                      child: GridView.count(
+                        crossAxisCount: 2,
+                        children: <Widget>[
+                          InkWell(
+                            onTap: () {
+                              if (context.read<FormModel>().isLogin) {
+                                Navigator.pushNamed(context, '/3');
+                                return;
+                              }
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content: Text('You have not login yet.'),
+                              ));
+                            },
+                            child: Container(
+                              child: Category(
+                                title: 'Task',
+                                png: 'assets/TaskOverview.png',
+                              ),
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              if (context.read<FormModel>().isLogin) {
+                                Navigator.pushNamed(context, '/5');
+                                return;
+                              }
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content: Text('You have not login yet.'),
+                              ));
+                            },
+                            child: Container(
+                              child: Category(
+                                title: 'Store',
+                                png: 'assets/Store.png',
+                              ),
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              if (context.read<FormModel>().isLogin) {
+                                Navigator.pushNamed(context, '/8');
+                                return;
+                              }
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content: Text('You have not login yet.'),
+                              ));
+                            },
+                            child: Container(
+                              child: Category(
+                                title: 'Mood',
+                                png: 'assets/DailyMood.png',
+                              ),
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              if (context.read<FormModel>().isLogin) {
+                                Navigator.pushNamed(context, '/10');
+                                return;
+                              }
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content: Text('You have not login yet.'),
+                              ));
+                            },
+                            child: Container(
+                              child: Category(
+                                title: 'Quote',
+                                png: 'assets/DailyQuote.png',
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    ElevatedButton.icon(
+                      onPressed: () async {
+                       FirebaseAuth.instance.signOut();
+                       //Navigator.popUntil(context, ModalRoute.withName('/1'));
+                       Navigator.pushNamed(context, '/15');
+                      }, 
+                      icon: Icon(Icons.login), 
+                      label: Text('Logout'),
+                      style: ElevatedButton.styleFrom(
+                        primary: Color(0xFF5F478C),
+                        fixedSize: Size(250,50),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50),
+                        ),
+                        textStyle: TextStyle(fontSize: 20),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
         ],

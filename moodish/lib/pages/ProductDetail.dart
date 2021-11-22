@@ -119,10 +119,10 @@ class OrderConfirmation extends StatelessWidget{
                 ),
               onPressed: () {},
               ),
-              SizedBox(height: 20.0),
+              //SizedBox(height: 20.0),
               Image.asset(
-              'assets/icon.png',
-              width: 200,
+              'assets/stepthree.png',
+              width: 270,
               ),
               SizedBox(height: 20),
               Text(
@@ -154,7 +154,7 @@ class OrderConfirmation extends StatelessWidget{
                 child: Text('View Order History'),
                 style: ElevatedButton.styleFrom(
                 primary: Color(0xFF5F478C),
-                fixedSize: Size(250, 50),
+                fixedSize: Size(250, 60),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(50),
                 ),
@@ -171,7 +171,7 @@ class OrderConfirmation extends StatelessWidget{
                 child: Text('Back to Store'),
                 style: ElevatedButton.styleFrom(
                 primary: Color(0xFF5F478C),
-                fixedSize: Size(250, 50),
+                fixedSize: Size(250, 60),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(50),
                 ),

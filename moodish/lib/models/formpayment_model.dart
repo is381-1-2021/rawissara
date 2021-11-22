@@ -2,21 +2,21 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class OrderModel{
-  final String amount;
   final String itemName;
   final DateTime order_date;
   final String status;
+  final String amount;
 
-  OrderModel(this.amount, this.itemName, this.order_date, this.status);
+  OrderModel(this.itemName, this.order_date, this.status,this.amount);
 
   factory OrderModel.fromJson(
     Map<String, dynamic> json,
   ) {
     return OrderModel(
-      json['amount'] as String,
       json['itemName'] as String,
       (json['order_date'] as Timestamp).toDate(),
       json['status'] as String,
+      json['amount'] as String,
     );
   }
 }

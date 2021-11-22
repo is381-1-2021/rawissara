@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:midterm_app/controllers/task_controller.dart';
 import 'package:midterm_app/models/Task.dart';
@@ -13,6 +14,7 @@ class AllTask extends StatefulWidget {
 class _AllTaskState extends State<AllTask> {
   List<Task> tasks = List.empty();
   bool isLoading = false;
+  bool completed = false;
   var services = FirebaseServices();
   var controller;
   void initState() {
@@ -41,57 +43,55 @@ class _AllTaskState extends State<AllTask> {
             return Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
-                  padding: EdgeInsets.all(20.0),
-                  decoration: BoxDecoration(
-                    color: Color(0xFFFFD376),
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                  //height: 150,
-                  child: Row(
-                      //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Checkbox(
-                          onChanged: null,
-                          value: tasks[index].completed,
-                          //title: Text(todos[index].title),
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Text(
-                          'DUEDATE : ${tasks[index].duedate.toString().substring(0, tasks[index].duedate.toString().lastIndexOf(' '))}',
-                          //textAlign: TextAlign.left,
-                          style: TextStyle(
-                            fontSize: 13,
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                            Text(
-                          '${tasks[index].headline}',
-                          //textAlign: TextAlign.center,
-                          style: TextStyle(
+                padding: EdgeInsets.all(20.0),
+                decoration: BoxDecoration(
+                  color: (tasks[index].completed == true)
+                      ? Colors.grey
+                      : Color(0xFFFFD376),
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+                child: CheckboxListTile(
+                  value: tasks[index].completed,
+                  isThreeLine: true,
+                  onChanged: (bool? value) {
+                    setState(() {
+                      tasks[index].completed = value!;
+                    });
+                    
+                    
+                    Map<String, dynamic> data = {"completed": value};
+                    FirebaseFirestore.instance
+                        .collection("moodish_task")
+                        .doc('')
+                        .update(data)
+                        .then((value) => print("Tasks status Updated"))
+                        .catchError((error) =>
+                            print("Failed to update tasks status!!"));
+
+                    //Navigator.pop(context);
+                  },
+                  subtitle: Text(
+                      'DUEDATE : ${tasks[index].duedate.toString().substring(0, tasks[index].duedate.toString().lastIndexOf(' '))}'),
+                  title: Column(
+                    children: [
+                      Text(
+                        '${tasks[index].headline}',
+                        style: TextStyle(
                             fontSize: 20,
                             color: Color(0xFF5F478C),
-                            fontWeight: FontWeight.bold
-              //              foreground: Paint()
-              //..style = PaintingStyle.stroke
-              //..strokeWidth = 1
-              //..color = Color(0xFF5F478C),
-                          ),
+                            fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        '${tasks[index].detail}',
+                        style: TextStyle(
+                          fontSize: 15,
                         ),
-                        SizedBox(height: 10),
-                        Text(
-                          '${tasks[index].detail}',
-                          //textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 15,
-                          ),
-                        ),
-                          ],
-                        ),
-                      ]
-                    ),
+                      )
+                    ],
                   ),
+                ),
+              ),
             );
           },
         );
