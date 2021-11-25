@@ -114,30 +114,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       onPressed: () async{
                         if(formKey.currentState!.validate()){
                         formKey.currentState!.save();
-                        try{
+                        
                           await FirebaseAuth.instance.createUserWithEmailAndPassword(
                             email: profile.Email!, 
                             password: profile.Password!
                             ).then((value) {
                               formKey.currentState!.reset();
-                            //  Fluttertoast.showToast(
-                            //  msg: "completed",
-                            //  gravity: ToastGravity.TOP);
-                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
-                              return Account();
-                              }));
+                              
+                              Navigator.pop(context);
                             });                            
-                        }on FirebaseAuthException catch(e){
-                          //print(e.code);
-                          //print(e.message);
-                          //Fluttertoast.showToast(
-                          //  msg: e.message!,
-                          //  gravity: ToastGravity.CENTER
-                          //  );
                         }
-                        }
-                        
-                      },
+                      }
+
                     ),
                   ),
                 ],

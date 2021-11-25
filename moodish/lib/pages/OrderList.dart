@@ -49,7 +49,7 @@ class _OrderListState extends State<OrderList> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          '${orders[index].itemName}',
+                          '${orders[index].itemName.toString().substring(0, orders[index].itemName.toString().lastIndexOf('฿'))}',
                           style: TextStyle(
                             fontFamily: 'Montserrat',
                             fontSize: 18,
@@ -79,7 +79,7 @@ class _OrderListState extends State<OrderList> {
                                   ),
                                   SizedBox(height: 8),
                                   Text(
-                                    '฿${orders[index].amount}',
+                                    '${orders[index].itemName.toString().substring(0, orders[index].itemName.toString().lastIndexOf('฿'))}',
                                     style: TextStyle(
                                       fontFamily: 'Montserrat',
                                       fontSize: 18,

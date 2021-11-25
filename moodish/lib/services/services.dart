@@ -17,17 +17,6 @@ abstract class Services{
 
 class FirebaseServices extends Services{
   @override
-  Future<List<Note>> getNotes() async {
-    QuerySnapshot snapshot =
-        await FirebaseFirestore
-          .instance
-          .collection('moodish_quotes')
-          .get();
-
-    var all = AllNotes.fromSnapshot(snapshot);
-
-    return all.notes;
-  }
 
   Future<List<Task>> getTasks() async {
     QuerySnapshot snapshot =
@@ -74,5 +63,17 @@ class FirebaseServices extends Services{
     var all = AllMoods.fromSnapshot(snapshot);
 
     return all.moods;
+  }
+
+    Future<List<Note>> getNotes() async {
+    QuerySnapshot snapshot =
+        await FirebaseFirestore
+          .instance
+          .collection('moodish_quotes')
+          .get();
+
+    var all = AllNotes.fromSnapshot(snapshot);
+
+    return all.notes;
   }
 } 

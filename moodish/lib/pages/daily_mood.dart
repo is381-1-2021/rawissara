@@ -10,15 +10,6 @@ class DailyMood extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Daily Mood'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.close_outlined),
-            tooltip: 'close',
-            onPressed: () {
-              Navigator.pushNamed(context, '/8');
-            },
-          ),
-        ],
       ),
       body: MoodForm(),
     );

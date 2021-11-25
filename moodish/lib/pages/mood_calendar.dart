@@ -50,9 +50,7 @@ class _AllMoodState extends State<AllMood> {
                           ? Colors.amber
                           : (moods[index].mood == 'Sad')
                               ? Colors.orange
-                              : (moods[index].mood == 'Angry')
-                                  ? Colors.red
-                                  : Colors.grey,
+                              : Colors.red,
                   borderRadius: BorderRadius.circular(20)),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -85,9 +83,7 @@ class _AllMoodState extends State<AllMood> {
                                   ? Image.asset('assets/happy.png')
                                   : (moods[index].mood == 'Sad')
                                       ? Image.asset('assets/sad.png')
-                                      : (moods[index].mood == 'Angry')
-                                          ? Image.asset('assets/angry.png')
-                                          : null,
+                                      : Image.asset('assets/angry.png')
                         ),
                       ),
                     ],

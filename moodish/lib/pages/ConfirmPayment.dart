@@ -59,82 +59,82 @@ class FormConfirm extends StatefulWidget {
 }
 
 class _FormConfirmState extends State<FormConfirm> {
-  final _formKey = GlobalKey<FormState>();
-  TextEditingController itemName = new TextEditingController();
-  TextEditingController amount = new TextEditingController();
-  //var selectedProduct;
-  //final products = [
-  //  'Digital Notebook: Sweet Home ฿99',
-  //  'App Icons: Picnic Day ฿159'
-  //];
+  //final _formKey = GlobalKey<FormState>();
+  //TextEditingController itemName = new TextEditingController();
+  //TextEditingController amount = new TextEditingController();
+  var selectedProduct;
+  final products = [
+    'Digital Notebook: Sweet Home ฿99',
+    'App Icons: Picnic Day ฿159'
+  ];
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Column(
+    return Column(
+      //key: _formKey,
+      //child: Column(
         children: <Widget>[
-          TextFormField(
-            controller: itemName,
-            decoration: InputDecoration(
-              icon: Icon(Icons.menu_book_rounded),
-              hintText: 'type product name',
-              labelText: 'Select Product',
-            ),
-            validator: (itemName) {
-              if (itemName == null || itemName.isEmpty) {
-                return 'Please enter your product';
-              }
-            },
+      //    TextFormField(
+      //      controller: itemName,
+      //      decoration: InputDecoration(
+      //        icon: Icon(Icons.menu_book_rounded),
+      //        hintText: 'type product name',
+      //        labelText: 'Select Product',
+      //      ),
+      //      validator: (itemName) {
+      //        if (itemName == null || itemName.isEmpty) {
+      //          return 'Please enter your product';
+      //        }
+      //      },
+      //    ),
+      //    TextFormField(
+      //      controller: amount,
+      //      decoration: InputDecoration(
+      //        icon: Icon(Icons.money_rounded),
+       //       hintText: 'amount',
+      //        labelText: 'Amount',
+       //     ),
+      //      validator: (amount) {
+      //        if (amount == null || amount.isEmpty) {
+      //          return 'Please enter your amount';
+      //        }
+      //      },
+      //    ),
+          Icon(
+            Icons.shopping_cart_outlined,
+            size: 50,
           ),
-          TextFormField(
-            controller: amount,
-            decoration: InputDecoration(
-              icon: Icon(Icons.money_rounded),
-              hintText: 'amount',
-              labelText: 'Amount',
-            ),
-            validator: (amount) {
-              if (amount == null || amount.isEmpty) {
-                return 'Please enter your amount';
-              }
-            },
-          ),
-        //  Icon(
-        //    Icons.shopping_cart_outlined,
-        //    size: 50,
-        //  ),
-        //  SizedBox(height: 30.0),
-        //  Row(
-        //    mainAxisAlignment: MainAxisAlignment.center,
-        //    children: <Widget> [
+          SizedBox(height: 30.0),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget> [
               //Icon(Icons.production_quantity_limits),
-              //SizedBox(width: 20),
-        //      Container(
-        //        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-        //        decoration: BoxDecoration(
-        //          border: Border.all(color: Color(0xFF9ADCF1), width:2),
-        //          borderRadius: BorderRadius.circular(20),
-        //        ),
-        //        child: DropdownButtonHideUnderline(
-        //          child: DropdownButton<String> (
-        //            hint: Text('Select product'),
-        //            value: selectedProduct,
-        //            items: products.map(buildMenuItem).toList(),
-        //            onChanged: (selectedProduct) => setState(() => this.selectedProduct = selectedProduct),
-        //          ),
-        //        ),
-        //      )
-        //    ],
-        //  ),
+              SizedBox(width: 20),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Color(0xFF9ADCF1), width:2),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton<String> (
+                    hint: Text('Select product'),
+                    value: selectedProduct,
+                    items: products.map(buildMenuItem).toList(),
+                    onChanged: (selectedProduct) => setState(() => this.selectedProduct = selectedProduct),
+                  ),
+                ),
+              )
+            ],
+          ),
           SizedBox(height: 60),
           ElevatedButton(
             onPressed: () {
-                if (_formKey.currentState!.validate()) {
+                //if (_formKey.currentState!.validate()) {
               
-                  _formKey.currentState!.save();
+                //  _formKey.currentState!.save();
 
-                Map <String, dynamic> data = {"itemName":itemName.text,"amount":amount.text,"status":"waiting","order_date":DateTime.now()}; 
+                Map <String, dynamic> data = {"itemName":selectedProduct,"amount":selectedProduct,"status":"waiting","order_date":DateTime.now()}; 
                 FirebaseFirestore.instance.collection("moodish_order")
                 .add(data)
                 .then((value) => print("New Order Added"))
@@ -143,8 +143,8 @@ class _FormConfirmState extends State<FormConfirm> {
                 Navigator.push(
                   context, 
                   MaterialPageRoute(builder: (context) => PayandGo()));
-              }
-            },
+              },
+            //},
             child: Text('Check Out'),
             style: ElevatedButton.styleFrom(
               primary: Color(0xFF5F478C),
@@ -156,17 +156,17 @@ class _FormConfirmState extends State<FormConfirm> {
             ),
           ),
         ],
-      ),
-    );
+      );
+    //);
   }
 
-  //DropdownMenuItem<String> buildMenuItem(String product) => DropdownMenuItem(
-  //  value: product,
-  //  child: Text(
-  //    product,
-  //    style: TextStyle(fontWeight: FontWeight.w500),
-  //  ),
-  //);
+  DropdownMenuItem<String> buildMenuItem(String product) => DropdownMenuItem(
+    value: product,
+    child: Text(
+      product,
+      style: TextStyle(fontWeight: FontWeight.w500),
+    ),
+  );
 
 }
 
