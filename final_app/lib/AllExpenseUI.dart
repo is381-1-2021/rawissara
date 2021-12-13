@@ -1,4 +1,5 @@
 import 'dart:html';
+import 'dart:js';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:final_app/AddExpenseUI.dart';
@@ -22,31 +23,19 @@ class _ExpenseListState extends State<ExpenseList> {
 
   List<TransModel> trans = List.empty();
   //bool isLoading = false;
-  double total = 0.0;
+  //double total = 0.0;
 
+  //List<TotalOperation> total = [];
+  //double sum = 0;
+  //final total = Provider.of<TotalOperation>(context);
+  
   var services = FirebaseServices();
   var controller;
 
   void initState() {
    super.initState();
-   queryValues();
   }
 
-  void queryValues() {
-    FirebaseFirestore.instance
-    .collection("mind_final")
-    .where("Date", isEqualTo: _focusedDay)
-    .snapshots()
-    .listen((QuerySnapshot querySnapshot) { 
-      //querySnapshot.docs.forEach((document) => this.total += document.data["Amount"]);
-      //double tempTotal = querySnapshot.docs.fold(0, (tot, doc) => tot + doc.data['Amount']);
-      setState(() {
-      //  total = tempTotal;
-      });
-      debugPrint(total.toString());
-    });
-  }
- 
   Widget calendar(){
     return Padding(
       padding: const EdgeInsets.all(15.0),
@@ -105,13 +94,14 @@ class _ExpenseListState extends State<ExpenseList> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   IconButton(onPressed: (){}, 
-                  icon: Icon(Icons.calendar_view_week),color: Colors.white),
+                  icon: Icon(Icons.calendar_today),color: Colors.white),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Consumer<BalanceModel>(
+                    child: Consumer<TotalOperation>(
                       builder: (context, model, child){
                         return Text(
-                          "total: $total",
+                          //'Balance: ${value.getTotalBalance.toString()}',
+                          "Total Balance: ${model.sum}",
                           //'฿${model.balance}',
                            style: TextStyle(
                               fontSize: 20, 
@@ -122,9 +112,9 @@ class _ExpenseListState extends State<ExpenseList> {
                     )
                   ),
                   IconButton(onPressed: () {}, 
-                  icon: Icon(Icons.settings),color: Colors.white),
+                  icon: Icon(Icons.more_vert),color: Colors.white),
                 ],
-              ),  
+              ),
               calendar(),
               Flexible(
                 child: StreamBuilder(
@@ -138,78 +128,78 @@ class _ExpenseListState extends State<ExpenseList> {
                       return Center(
                       child: Column(
                         children: <Widget>[
-                          CircularProgressIndicator(),
-                          Text("Loading . . . "),
+                          CircularProgressIndicator(color: Colors.white),
                         ],
                       ),
                     );
                     }
                     else {
-                      return ListView.builder(
-                        shrinkWrap: true,            
-                        itemCount: snapshot.data!.docs.length,
-                        itemBuilder: (context, index){
-                          return Padding(
-                            padding: const EdgeInsets.only(left:20.0,right:20,top:15),
-                            child: Card(                              
-                              color: Colors.black,
-                              elevation: 15,
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                              child: Container(
-                                decoration: BoxDecoration( 
-                                  borderRadius: BorderRadius.circular(20),                               
-                                  gradient: LinearGradient(colors: [Color(0xFF1D1D1D),Color(0xFF292728)],begin: Alignment.topCenter,end: Alignment.bottomCenter)
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(15.0),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                IntrinsicHeight(
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                    Container(
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: 5.0,
-                                        vertical: 5.0,
-                                      ),
-                                      child: Row(
+                      return 
+                          ListView.builder(
+                            shrinkWrap: true,            
+                            itemCount: snapshot.data!.docs.length,
+                            itemBuilder: (context, index){
+                              return Padding(
+                                padding: const EdgeInsets.only(left:20.0,right:20,top:15),
+                                child: Card(                              
+                                  color: Colors.black,
+                                  elevation: 15,
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                                  child: Container(
+                                    decoration: BoxDecoration( 
+                                      borderRadius: BorderRadius.circular(20),                               
+                                      gradient: LinearGradient(colors: [Color(0xFF1D1D1D),Color(0xFF292728)],begin: Alignment.topCenter,end: Alignment.bottomCenter)
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(15.0),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                          Image.asset(
-                                            snapshot.data!.docs[index]["Type"],
-                                            width:50
+                                    IntrinsicHeight(
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                        Container(
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: 5.0,
+                                            vertical: 5.0,
                                           ),
-                                          SizedBox(width: 15),
-                                          Text(
-                                            snapshot.data!.docs[index]["Item"],
-                                            style: TextStyle(
-                                              fontFamily: 'Montserrat',
-                                              fontSize: 20,
-                                              color: Colors.white,
-                                            ),
+                                          child: Row(
+                                            children: [
+                                              Image.asset(
+                                                snapshot.data!.docs[index]["Type"],
+                                                width:50
+                                              ),
+                                              SizedBox(width: 15),
+                                              Text(
+                                                snapshot.data!.docs[index]["Item"],
+                                                style: TextStyle(
+                                                  fontFamily: 'Montserrat',
+                                                  fontSize: 20,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Text(
+                                          '${snapshot.data!.docs[index]["Amount"]}฿',
+                                          style: TextStyle(
+                                            fontFamily: 'Montserrat',
+                                            fontSize: 18,
+                                            color: snapshot.data!.docs[index]["Amount"] > 0 
+                                            ? Colors.greenAccent[700]
+                                            :Colors.red,
+                                            fontWeight: FontWeight.bold
+                                          ),
                                           ),
                                         ],
                                       ),
-                                    ),
-                                    Text(
-                                      '\฿${snapshot.data!.docs[index]["Amount"]}',
-                                      style: TextStyle(
-                                        fontFamily: 'Montserrat',
-                                        fontSize: 18,
-                                        color: snapshot.data!.docs[index]["Type"] == 'assets/images/revenue.png' 
-                                        ? Colors.greenAccent[700]
-                                        :Colors.red,
-                                        fontWeight: FontWeight.bold
-                                      ),
-                                      ),
-                                    ],
-                                  ),
-                                ), 
-                              ],
+                                    ), 
+                                  ],
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
                            ),
                           );                          
                         },

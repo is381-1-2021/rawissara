@@ -5,7 +5,7 @@ class TransModel {
   final String Item;
   final DateTime Date;
   final String Type;
-  final int Amount;
+  final double Amount;
 
   TransModel(this.Item, this.Date, this.Type, this.Amount);
 
@@ -16,7 +16,7 @@ class TransModel {
       json['Item'] as String,
       (json['Date'] as Timestamp).toDate(),
       json['Type'] as String,
-      json['Amount'] as int,
+      json['Amount'] as double,
     );
   }
 }

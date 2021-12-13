@@ -16,7 +16,7 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(
-           create: (context) => BalanceModel(),
+           create: (context) => TotalOperation(),
         ),
       ],
       child: MyApp(),
@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/1',
       routes: <String, WidgetBuilder> {
         '/1': (context) => ExpenseList(),
-        '/3': (context) => TransList()
+        '/3': (context) => TransList(),
       },
     );
   }

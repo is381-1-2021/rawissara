@@ -15,6 +15,11 @@ class _NewExpenseState extends State<NewExpense> {
   var itemTextController = TextEditingController();
   var amountTextController = TextEditingController();
 
+  //double total = 0.0;
+  List<BalanceModel> balance = [];
+  double _saved = 0;
+  
+
   DateTime _focusedDay = DateTime.utc(2021, 12, 12);
   DateTime? _selectedDay;
   
@@ -34,9 +39,20 @@ class _NewExpenseState extends State<NewExpense> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              Padding(
+                padding: EdgeInsets.all(10),
+                child: Text(
+                  'Select Date',
+                  textAlign: TextAlign.left,
+                  style: TextStyle(fontSize:15)
+                ),
+              ),
               calendar(),
               TextFormField(
-                decoration: InputDecoration(labelText: 'item'),
+                decoration: InputDecoration(
+                  labelText: 'item',
+                  icon: Icon(Icons.auto_fix_high)
+                ),
                 controller: itemTextController,
                 validator: (itemTextController) {
                 if (itemTextController == null || itemTextController.isEmpty) {
@@ -44,8 +60,11 @@ class _NewExpenseState extends State<NewExpense> {
                 }
               },
               ),
-               TextFormField(
-                decoration: InputDecoration(labelText: 'amount'),
+              TextFormField(
+                decoration: InputDecoration(
+                  labelText: 'amount',
+                  icon: Icon(Icons.money_rounded),
+                ),
                 controller: amountTextController,
                 keyboardType: TextInputType.number,
                 inputFormatters: <TextInputFormatter>[
@@ -61,8 +80,24 @@ class _NewExpenseState extends State<NewExpense> {
                 //},
                 //initialValue: context.read<BalanceModel>().balance.toString()
               ),
-              SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.only(top:8.0, bottom:8.0,left: 40),
+                child: Text('Expense: enter "-" before number', style: TextStyle(color: Colors.red[400])),
+              ),
               //select icon
+              Padding(
+                padding: EdgeInsets.all(20.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Select Category',
+                      style: TextStyle(fontSize: 15),
+                    ),
+                    Icon(Icons.chevron_right, size:25),
+                  ],
+                ),
+              ),
               Container(
                 margin: EdgeInsets.symmetric(vertical: 3.0),
                 height: 70,
@@ -97,16 +132,22 @@ class _NewExpenseState extends State<NewExpense> {
               SizedBox(height: 20),
               Center(
                 child: ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async{
+                    setState(() {
+                      _saved = _saved + double.parse(amountTextController.text);
+                    });
+
+
                     if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
-
-                    context.read<BalanceModel>().balance = double.parse(amountTextController.text);
-                    //Provider.of<BalanceModel>(context, listen:false)
-                    //.addNewTransaction(double.parse(amountTextController.text));
+                    
+                    context.read<TotalOperation>().sum += _saved;
+                    Provider.of<TotalOperation>(context, listen:false)
+                    .getTotalBalance(double.parse(amountTextController.text));
                     //totalBalanceValue += double.parse(amountTextController.text);
                     //context.read<BalanceModel>().balance = totalBalanceValue;
 
+                  //expense list
                     Map<String, dynamic> data = {
                     "Amount": double.parse(amountTextController.text),
                     "Date": _selectedDay,
@@ -117,8 +158,15 @@ class _NewExpenseState extends State<NewExpense> {
                   .add(data)
                   .then((value) => print("New Transaction Added"))
                   .catchError((error) => print("Failed to add transaction!!"));
+
+                  //update balance
+                    //Map<String, dynamic> balance = {
+                    //'Balance': double.parse(amountTextController.text),
+                    //"DateAdd": _selectedDay,
+                  };
+                  
                   Navigator.pop(context);
-                    }
+                    
                   }, 
                   child: Text('Confirm'),
                   style: ElevatedButton.styleFrom(

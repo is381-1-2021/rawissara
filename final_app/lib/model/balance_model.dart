@@ -1,28 +1,67 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:final_app/model/transaction_model.dart';
 import 'package:flutter/material.dart';
 
 class BalanceModel extends ChangeNotifier {
-  double balance = 0;
+  //final DateTime DateAdd;
+  final double Balance;
+  get getBalance => this.Balance;
 
-  double get getBalance => this.balance;
-
-  set setBalance(double balance) {
-    this.balance = balance;
+  set setBalance( Balance) {
     notifyListeners();
   } 
+
+  BalanceModel(this.Balance);
+
+  factory BalanceModel.fromJson(
+    Map<String, dynamic> json,
+  ) {
+    return BalanceModel(
+      //(json['DateAdd'] as Timestamp).toDate(),
+      json['Balance'] as double,
+    );
+  }
+
+  BalanceModel.fromSnapshot(DocumentSnapshot snapshot) :
+    //DateAdd = snapshot['DateAdd'].toDate(),
+    Balance = snapshot['Balance'];
   
 }
 
-/*
-  var totalBalanceValue = 0;
+class TotalModel{
+  double balance;
+  TotalModel(this.balance);
+}
 
-  Widget getBalanceTotal() async {
-    QuerySnapshot snapshot = await FirebaseFirestore.instance.collection("mind_final").get();
+class TotalOperation extends ChangeNotifier{
+  double sum = 0;
+  double get getSum => this.sum;
+  set setSum(double sum) {
+     this.sum = sum;
+     notifyListeners();
+  }
 
-    snapshot.docs.forEach((doc) {
-      setState(() {
-        totalBalanceValue += doc.data["Amount"];
-      });
-      return totalBalanceValue.toString();
-    })
-  } */
+  List<BalanceModel> _balance = [];
+  List<BalanceModel> get getBalance{
+    return _balance;
+  }
+
+  BalanceOperaion() {
+    getTotalBalance(0.0);
+  }
+
+  void getTotalBalance(double sum){
+   BalanceModel balance = BalanceModel(0.0);
+    _balance.add(balance);
+    
+    _balance.forEach((item) { 
+      sum = sum + item.Balance;
+    });
+    FirebaseFirestore.instance.collection('mind_todos')
+    .doc('TpLRZioBLR3mLNZR9Mj9')
+    .update({'Balance': sum})
+    .then((_) => print('Updated Balance'))
+    .catchError((error) => print('Failed: $error'));
+    notifyListeners();
+  }
+}
