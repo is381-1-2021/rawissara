@@ -22,12 +22,7 @@ class _ExpenseListState extends State<ExpenseList> {
   DateTime? _selectedDay;
 
   List<TransModel> trans = List.empty();
-  //bool isLoading = false;
-  //double total = 0.0;
-
-  //List<TotalOperation> total = [];
-  //double sum = 0;
-  //final total = Provider.of<TotalOperation>(context);
+  List<BalanceModel> balanceModel = [];
   
   var services = FirebaseServices();
   var controller;
@@ -100,9 +95,8 @@ class _ExpenseListState extends State<ExpenseList> {
                     child: Consumer<TotalOperation>(
                       builder: (context, model, child){
                         return Text(
-                          //'Balance: ${value.getTotalBalance.toString()}',
+                          //context.read<BalanceModel>().Balance.toString(),
                           "Total Balance: ${model.sum}",
-                          //'฿${model.balance}',
                            style: TextStyle(
                               fontSize: 20, 
                               color: Colors.white
@@ -222,3 +216,19 @@ class _ExpenseListState extends State<ExpenseList> {
   }
 }
 
+/*
+  Widget getBalancefirebase() {
+  return new  StreamBuilder(
+      stream: FirebaseFirestore.instance
+      .collection("mind_todos")
+      .doc('TpLRZioBLR3mLNZR9Mj9')
+      .snapshots(),
+      builder: (context, snapshot) {
+      if (!snapshot.hasData){
+        return Text('Balance');
+      }
+      var document = snapshot.data;
+      return new Text(document['Balance']);
+      }
+    );
+  }*/

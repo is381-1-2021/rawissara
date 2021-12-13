@@ -1,7 +1,6 @@
 
 import 'package:final_app/AddExpenseUI.dart';
 import 'package:final_app/AllExpenseUI.dart';
-import 'package:final_app/showlist.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -17,6 +16,9 @@ void main() async {
       providers: [
         ChangeNotifierProvider(
            create: (context) => TotalOperation(),
+        ),
+        ChangeNotifierProvider(
+           create: (context) => BalanceModel(0.0),
         ),
       ],
       child: MyApp(),
@@ -37,7 +39,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/1',
       routes: <String, WidgetBuilder> {
         '/1': (context) => ExpenseList(),
-        '/3': (context) => TransList(),
+        '/2': (context) => NewExpense(),
       },
     );
   }

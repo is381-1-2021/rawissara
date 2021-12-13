@@ -7,7 +7,7 @@ class BalanceModel extends ChangeNotifier {
   final double Balance;
   get getBalance => this.Balance;
 
-  set setBalance( Balance) {
+  set setBalance(Balance) {
     notifyListeners();
   } 
 
@@ -28,13 +28,8 @@ class BalanceModel extends ChangeNotifier {
   
 }
 
-class TotalModel{
-  double balance;
-  TotalModel(this.balance);
-}
-
 class TotalOperation extends ChangeNotifier{
-  double sum = 0;
+  double sum = 1000;
   double get getSum => this.sum;
   set setSum(double sum) {
      this.sum = sum;
@@ -59,9 +54,13 @@ class TotalOperation extends ChangeNotifier{
     });
     FirebaseFirestore.instance.collection('mind_todos')
     .doc('TpLRZioBLR3mLNZR9Mj9')
-    .update({'Balance': sum})
+    .update({'Balance': FieldValue.increment(sum)})
     .then((_) => print('Updated Balance'))
     .catchError((error) => print('Failed: $error'));
     notifyListeners();
+  }
+
+  void showTotalBalance(){
+
   }
 }

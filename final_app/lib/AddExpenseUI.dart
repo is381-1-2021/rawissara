@@ -40,7 +40,7 @@ class _NewExpenseState extends State<NewExpense> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.all(10),
+                padding: EdgeInsets.all(5),
                 child: Text(
                   'Select Date',
                   textAlign: TextAlign.left,
